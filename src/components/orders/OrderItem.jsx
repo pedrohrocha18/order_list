@@ -1,15 +1,23 @@
 import React from "react";
 import "./orderitem.css";
 
-const OrderItem = () => {
+const OrderItem = ({ numeroPedido, cliente, timer }) => {
   return (
     <>
-      <li className="order_item">
-        <p>87992</p>
-        <p>Mario José</p>
-        <p>Em rota de entrega</p>
-        <p>Tempo Restante</p>
-      </li>
+      <table className="table">
+        <tr className="table_first_row">
+          <th>Pedido</th>
+          <th>Cliente</th>
+          <th>Status</th>
+          <th>Tempo</th>
+        </tr>
+        <tr className="table_second_row">
+          <td>{numeroPedido}</td>
+          <td>{cliente}</td>
+          <td>Em rota de entrega</td>
+          <td>{timer}</td>
+        </tr>
+      </table>
     </>
   );
 };

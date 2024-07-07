@@ -1,6 +1,47 @@
-.order_item {
-    display: flex;
-    gap: 30px;
-    padding: 10px;
+.table {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 10px;
+  width: 90%;
+}
+.table_first_row {
+  border-bottom: 1px solid rgb(197, 197, 197);
+  display: flex;
+  padding: 10px;
+  text-align: center;
+  width: 90%;
+}
+.table_first_row th {
+  text-align: start;
+  width: 20%;
+}
+.table_second_row {
+  display: flex;
+  text-align: center;
+  width: 90%;
+}
+
+.table_second_row td {
+  text-align: start;
+  width: 20%;
+}
+@media screen and (max-width: 500px) {
+  .table {
     width: 100%;
+  }
+  .table_first_row {
+    width: 80%;
+  }
+  .table_first_row th {
+    font-size: 15px;
+    width: 20%;
+  }
+  .table_second_row {
+    width: 80%;
+  }
+  .table_second_row td {
+    font-size: 15px;
+    width: 20%;
+  }
 }
