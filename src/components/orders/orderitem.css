@@ -6,7 +6,9 @@
 }
 
 .table_second_row {
+  align-items: center;
   display: flex;
+  height: 45px;
   margin-bottom: 5px;
   text-align: center;
   width: 95%;
