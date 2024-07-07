@@ -7,14 +7,50 @@ import "./styles.css";
 const Home = () => {
   const [orders, setOrders] = useState([]);
 
-  const addOrder = async (order) => {
-    const newOrder = {
-      numeroPedido: orders.length + 1,
-      cliente: order.name,
-      status: "Pendente",
-      timer: await getTravelTime(order.address),
+  function convertMinutesToSeconds(minutes) {
+    return minutes * 60;
+  }
+
+  function convertSecondsToHoursMinutesSeconds(seconds) {
+    const hours = Math.floor(seconds / 3600);
+    const remainingSeconds = seconds % 3600;
+    const minutes = Math.floor(remainingSeconds / 60);
+    const finalSeconds = remainingSeconds % 60;
+
+    return {
+      hours: hours,
+      minutes: minutes,
+      seconds: finalSeconds,
     };
-    setOrders([...orders, newOrder]);
+  }
+
+  const addOrder = async (order) => {
+    const travelTime = await getTravelTime(order.address);
+
+    if (travelTime !== null && travelTime !== undefined) {
+      const preparationTime = convertMinutesToSeconds(30);
+
+      const totalTimeInSeconds = travelTime + preparationTime;
+
+      const totalTimeFormatted =
+        convertSecondsToHoursMinutesSeconds(totalTimeInSeconds);
+
+      const newOrder = {
+        numeroPedido: orders.length + 1,
+        cliente: order.name,
+        status: "Pendente",
+        timer: `${String(totalTimeFormatted.hours).padStart(2, "0")}:${String(
+          totalTimeFormatted.minutes
+        ).padStart(2, "0")}:${String(totalTimeFormatted.seconds).padStart(
+          2,
+          "0"
+        )}`,
+      };
+
+      setOrders([...orders, newOrder]);
+    } else {
+      console.error("Erro ao calcular o tempo total de entrega.");
+    }
   };
 
   const getTravelTime = async (destination) => {
@@ -32,11 +68,11 @@ const Home = () => {
         throw new Error("Rota não encontrada na resposta da API");
       }
 
-      const duration = route.legs[0].duration.text;
-      return duration;
+      const durationInSeconds = route.legs[0].duration.value;
+      return durationInSeconds;
     } catch (error) {
       console.error("Erro ao buscar tempo de trajeto:", error);
-      return "Erro ao buscar tempo de trajeto";
+      return null;
     }
   };
 
