@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import "./styles.css";
+import axios from "axios";
 import Modal from "../components/modal/Modal";
 import OrderItem from "../components/orders/OrderItem";
-import axios from "axios";
+import "./styles.css";
 
 const Home = () => {
   const [orders, setOrders] = useState([]);
