@@ -1,16 +1,22 @@
 import express from "express";
 import axios from "axios";
 import cors from "cors";
+import apiKey from '../../key.js'
 
 const app = express();
+
+dotenv.config();
+
 const PORT = process.env.PORT || 5000;
-const apiKey = "AIzaSyBtz6hF_kJYyuJwnS5zdck9rNQHJmF2aHg";
+const key = apiKey;
 
 app.use(cors());
 
 app.get("/api/googlemaps/directions", async (req, res) => {
   const { origin, destination } = req.query;
-  const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&key=${apiKey}`;
+  const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${encodeURIComponent(
+    origin
+  )}&destination=${encodeURIComponent(destination)}&key=${key}`;
 
   try {
     const response = await axios.get(url);
