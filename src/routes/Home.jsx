@@ -35,18 +35,19 @@ const Home = () => {
       const preparationTime = convertMinutesToSeconds(30);
       const totalTimeInSeconds = travelTime + preparationTime;
 
-      const totalTimeFormatted = convertSecondsToHoursMinutesSeconds(totalTimeInSeconds);
+      const totalTimeFormatted =
+        convertSecondsToHoursMinutesSeconds(totalTimeInSeconds);
 
       const newOrder = {
         numeroPedido: orders.length + 1,
         cliente: order.name,
-        status: "Pendente",
+        status: "Em produção",
         totalTimeInSeconds: totalTimeInSeconds,
         totalTimeFormatted: totalTimeFormatted,
       };
 
       setOrders([...orders, newOrder]);
-      
+
       // Iniciar contagem regressiva para este pedido
       startTimer(newOrder);
     } else {
@@ -60,7 +61,9 @@ const Home = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/googlemaps/directions?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}`
+        `http://localhost:5000/api/googlemaps/directions?origin=${encodeURIComponent(
+          origin
+        )}&destination=${encodeURIComponent(destination)}`
       );
 
       const route = response.data.routes[0];
@@ -87,16 +90,47 @@ const Home = () => {
 
     // Iniciar o intervalo para decrementar o tempo restante
     const interval = setInterval(() => {
-      setTimeLeft((prevTimeLeft) => ({
-        ...prevTimeLeft,
-        [order.numeroPedido]: prevTimeLeft[order.numeroPedido] - 1,
-      }));
+      setTimeLeft((prevTimeLeft) => {
+        const newTimeLeft = {
+          ...prevTimeLeft,
+          [order.numeroPedido]: prevTimeLeft[order.numeroPedido] - 1,
+        };
+
+        if (newTimeLeft[order.numeroPedido] <= totalTimeInSeconds - 30) {
+          // Atualizar o status do pedido para "Rota de Entrega" após 30 minutos 1800
+          setOrders((prevOrders) =>
+            prevOrders.map((o) =>
+              o.numeroPedido === order.numeroPedido
+                ? { ...o, status: "Rota de Entrega" }
+                : o
+            )
+          );
+        }
+
+        if (newTimeLeft[order.numeroPedido] <= 60) {
+          // Atualizar o status do pedido para "Entregue" quando o cronômetro chegar a zero
+          setOrders((prevOrders) =>
+            prevOrders.map((o) =>
+              o.numeroPedido === order.numeroPedido
+                ? { ...o, status: "Entregue" }
+                : o
+            )
+          );
+
+          // Limpar o intervalo para parar o cronômetro
+          clearInterval(order.intervalId);
+        }
+
+        return newTimeLeft;
+      });
     }, 1000);
 
     // Adicionar o ID do intervalo ao estado do pedido
     setOrders((prevOrders) =>
       prevOrders.map((o) =>
-        o.numeroPedido === order.numeroPedido ? { ...o, intervalId: interval } : o
+        o.numeroPedido === order.numeroPedido
+          ? { ...o, intervalId: interval }
+          : o
       )
     );
   };
@@ -108,7 +142,7 @@ const Home = () => {
         clearInterval(order.intervalId);
       });
     };
-  }, []);
+  }, [orders]);
 
   return (
     <main>
@@ -120,7 +154,7 @@ const Home = () => {
           <Modal onAddOrder={addOrder} />
         </div>
       </div>
-      <ul className="list_orders">
+      <table className="table">
         <tr className="table_first_row">
           <th>Pedido</th>
           <th>Cliente</th>
@@ -133,11 +167,17 @@ const Home = () => {
             numeroPedido={order.numeroPedido}
             cliente={order.cliente}
             status={order.status}
-            totalTime={`${String(order.totalTimeFormatted.hours).padStart(2, "0")}:${String(order.totalTimeFormatted.minutes).padStart(2, "0")}:${String(order.totalTimeFormatted.seconds).padStart(2, "0")}`}
+            totalTime={`${String(order.totalTimeFormatted.hours).padStart(
+              2,
+              "0"
+            )}:${String(order.totalTimeFormatted.minutes).padStart(
+              2,
+              "0"
+            )}:${String(order.totalTimeFormatted.seconds).padStart(2, "0")}`}
             timeLeft={timeLeft[order.numeroPedido]}
           />
         ))}
-      </ul>
+      </table>
     </main>
   );
 };

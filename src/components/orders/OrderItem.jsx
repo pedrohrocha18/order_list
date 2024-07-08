@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import './orderitem.css'
+import "./orderitem.css";
+import { FcClock } from "react-icons/fc";
 
 const OrderItem = ({ numeroPedido, cliente, status, timeLeft }) => {
   const formatTime = (timeInSeconds) => {
@@ -25,10 +26,15 @@ const OrderItem = ({ numeroPedido, cliente, status, timeLeft }) => {
 
   return (
     <tr className="table_second_row">
-      <td>{numeroPedido}</td>
-      <td>{cliente}</td>
-      <td>{status}</td>
-      <td>{timer}</td>
+      <th>{numeroPedido}</th>
+      <th>{cliente}</th>
+      <th>{status}</th>
+      <th>
+        <div>
+          <FcClock style={{ fontSize: "20px" }} />
+        </div>
+        {timer}
+      </th>
     </tr>
   );
 };
