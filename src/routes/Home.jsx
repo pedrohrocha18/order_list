@@ -96,8 +96,11 @@ const Home = () => {
           [order.numeroPedido]: prevTimeLeft[order.numeroPedido] - 1,
         };
 
-        if (newTimeLeft[order.numeroPedido] <= totalTimeInSeconds - 30) {
-          // Atualizar o status do pedido para "Rota de Entrega" após 30 minutos 1800
+        const elapsedTime =
+          totalTimeInSeconds - newTimeLeft[order.numeroPedido];
+
+        if (elapsedTime >= 20 && order.status === "Em produção") {
+          // Atualizar o status do pedido para "Rota de Entrega" após 30 minutos
           setOrders((prevOrders) =>
             prevOrders.map((o) =>
               o.numeroPedido === order.numeroPedido
@@ -107,7 +110,7 @@ const Home = () => {
           );
         }
 
-        if (newTimeLeft[order.numeroPedido] <= 60) {
+        if (newTimeLeft[order.numeroPedido] <= 1770) {
           // Atualizar o status do pedido para "Entregue" quando o cronômetro chegar a zero
           setOrders((prevOrders) =>
             prevOrders.map((o) =>
@@ -116,11 +119,8 @@ const Home = () => {
                 : o
             )
           );
-
-          // Limpar o intervalo para parar o cronômetro
-          clearInterval(order.intervalId);
+          clearInterval(interval);
         }
-
         return newTimeLeft;
       });
     }, 1000);
@@ -134,15 +134,6 @@ const Home = () => {
       )
     );
   };
-
-  // Efeito para limpar o intervalo quando o componente for desmontado
-  useEffect(() => {
-    return () => {
-      orders.forEach((order) => {
-        clearInterval(order.intervalId);
-      });
-    };
-  }, [orders]);
 
   return (
     <main>
@@ -159,7 +150,7 @@ const Home = () => {
           <th>Pedido</th>
           <th>Cliente</th>
           <th>Status</th>
-          <th>Tempo Restante</th>
+          <th>Tempo</th>
         </tr>
         {orders.map((order) => (
           <OrderItem

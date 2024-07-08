@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./orderitem.css";
-import { FcClock } from "react-icons/fc";
+import { FcClock, FcFlashOn, FcInTransit, FcOk } from "react-icons/fc";
 
 const OrderItem = ({ numeroPedido, cliente, status, timeLeft }) => {
   const formatTime = (timeInSeconds) => {
@@ -28,11 +28,24 @@ const OrderItem = ({ numeroPedido, cliente, status, timeLeft }) => {
     <tr className="table_second_row">
       <th>{numeroPedido}</th>
       <th>{cliente}</th>
-      <th>{status}</th>
+      {status === "Em produção" ? (
+        <th>
+          <FcFlashOn style={{ fontSize: "20px" }} />
+          {status}
+        </th>
+      ) : status === "Rota de Entrega" ? (
+        <th className="status_rota_entrega">
+          <FcInTransit style={{ fontSize: "20px" }} />
+          {status}
+        </th>
+      ) : (
+        <th style={{ gap: "5px", width: "95px" }}>
+          <FcOk style={{ fontSize: "20px" }} />
+          {status}
+        </th>
+      )}
       <th>
-        <div>
-          <FcClock style={{ fontSize: "20px" }} />
-        </div>
+        <FcClock style={{ fontSize: "20px" }} />
         {timer}
       </th>
     </tr>

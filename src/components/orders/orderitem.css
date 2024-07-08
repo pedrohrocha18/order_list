@@ -1,47 +1,39 @@
 .table_second_row {
+  border-bottom: 1px solid rgb(199, 199, 199);
   display: flex;
-  flex-direction: row;
-  gap: 15px;
   height: 45px;
-  margin-bottom: 5px;
+  justify-content: space-around;
+  margin-top: 0.5rem;
   width: 100%;
 }
+
 .table_second_row th {
   align-items: center;
   display: flex;
   font-size: 16px;
   font-weight: 500;
   justify-content: center;
-  text-align: center;
-  width: 25%;
+  text-align: start;
+  width: 115px;
 }
 
-.table_second_row th:last-child {
-  text-align: start;
+.status_rota_entrega {
   gap: 5px;
-  padding: 0 100px;
+  width: 145px;
 }
 
 @media screen and (max-width: 500px) {
   .table {
     width: 100%;
   }
-  .table_first_row {
-    width: 80%;
-  }
-  .table_first_row th {
-    font-size: 15px;
-    width: 20%;
-  }
+
   .table_second_row {
     width: 100%;
   }
+
   .table_second_row th {
-    font-size: 15px;
+    font-size: 13px;
+    width: 95px;
   }
-  .table_second_row th:last-child {
-    text-align: start;
-    gap: 5px;
-    padding: 0 45px;
-  }
+
 }

@@ -45,4 +45,10 @@ main {
   .header h2 {
     font-size: 18px;
   }
+  .table {
+    padding: 10px;
+  }
+  .table_first_row {
+    padding: 0px;
+  }
 }

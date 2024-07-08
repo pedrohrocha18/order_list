@@ -1,7 +1,6 @@
 .button_add_order {
-  background-color: rgb(3, 85, 0);
   border: none;
-  border-radius: 10px;
+  border-radius: 5px;
   color: white;
   font-size: 15px;
   font-weight: bold;
@@ -11,5 +10,5 @@
 }
 
 .button_add_order:hover {
-  background-color: rgb(0, 126, 10);
+  background-color: rgb(0, 90, 8);
 }
