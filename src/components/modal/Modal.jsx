@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import AddOrder from "../buttons/addOrder";
 
 const Modal = ({ onAddOrder }) => {
@@ -11,11 +13,13 @@ const Modal = ({ onAddOrder }) => {
       onAddOrder({ name, address });
       setName("");
       setAddress("");
+      toast.success("Pedido adicionado");
     }
   };
 
   return (
     <div>
+      <ToastContainer />
       <button
         data-modal-target="crud-modal"
         data-modal-toggle="crud-modal"
@@ -67,7 +71,7 @@ const Modal = ({ onAddOrder }) => {
                 <div className="col-span-2">
                   <label
                     htmlFor="name"
-                    style={{textAlign:"start"}}
+                    style={{ textAlign: "start" }}
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
                     Nome do Cliente:
@@ -87,7 +91,7 @@ const Modal = ({ onAddOrder }) => {
                 <div className="col-span-2">
                   <label
                     htmlFor="address"
-                    style={{textAlign:"start"}}
+                    style={{ textAlign: "start" }}
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
                     Endereço de Entrega:
