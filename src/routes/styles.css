@@ -30,6 +30,7 @@ main {
   border-bottom: 1px solid rgb(197, 197, 197);
   display: flex;
   padding: 10px;
+  user-select: none;
   text-align: center;
   width: 100%;
 }
