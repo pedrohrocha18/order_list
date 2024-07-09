@@ -4,7 +4,7 @@ import "./styles.css";
 
 const Header = () => {
   return (
-    <header>
+    <header style={{ userSelect: "none" }}>
       <div>
         <img src={logo} alt="logo" />
       </div>
