@@ -2,8 +2,8 @@ header {
   align-items: center;
   display: flex;
   background: rgb(255, 203, 157);
-
   justify-content: space-between;
+  user-select: none;
   width: 100%;
 }
 
