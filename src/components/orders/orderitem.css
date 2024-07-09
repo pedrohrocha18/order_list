@@ -20,7 +20,7 @@
 
 .status_rota_entrega {
   gap: 5px;
-  width: 145px;
+  width: 95px;
 }
 
 @media screen and (max-width: 500px) {

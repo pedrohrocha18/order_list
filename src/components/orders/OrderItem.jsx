@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from "react";
 import "./orderitem.css";
-import { FcClock, FcFlashOn, FcInTransit, FcOk } from "react-icons/fc";
+import {
+  FcSurvey,
+  FcClock,
+  FcFlashOn,
+  FcInTransit,
+  FcOk,
+} from "react-icons/fc";
 
 const OrderItem = ({ numeroPedido, cliente, status, timeLeft }) => {
   const formatTime = (timeInSeconds) => {
+    if (isNaN(timeInSeconds)) {
+      return "00:00:00";
+    }
     const hours = Math.floor(timeInSeconds / 3600);
     const minutes = Math.floor((timeInSeconds % 3600) / 60);
     const seconds = timeInSeconds % 60;
@@ -24,11 +33,25 @@ const OrderItem = ({ numeroPedido, cliente, status, timeLeft }) => {
     return () => clearInterval(interval);
   }, [timeLeft]);
 
+  // Verificação do comprimento do timer
+  const renderTimer = () => {
+    if (timer.length === 8 || timer.length === 11) {
+      return timer;
+    } else {
+      return <div>Aguardando</div>;
+    }
+  };
+
   return (
     <tr className="table_second_row">
       <th>{numeroPedido}</th>
       <th>{cliente}</th>
-      {status === "Em produção" ? (
+      {status === "Aguardando" ? (
+        <th>
+          <FcSurvey style={{ fontSize: "20px" }} />
+          {status}
+        </th>
+      ) : status === "Em produção" ? (
         <th>
           <FcFlashOn style={{ fontSize: "20px" }} />
           {status}
@@ -46,7 +69,7 @@ const OrderItem = ({ numeroPedido, cliente, status, timeLeft }) => {
       )}
       <th>
         <FcClock style={{ fontSize: "20px" }} />
-        {timer}
+        {renderTimer()}
       </th>
     </tr>
   );
