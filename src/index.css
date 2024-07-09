@@ -9,10 +9,10 @@
 }
 
 body {
-  background-color: rgb(219, 219, 219);
+  background-color: rgb(252, 248, 241);
 }
 
 .container {
-  min-height: 83vh;
+  min-height: 78vh;
   width: 100%;
 }
