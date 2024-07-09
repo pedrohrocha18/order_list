@@ -7,6 +7,7 @@ import "./styles.css";
 const Home = () => {
   const [orders, setOrders] = useState([]);
   const [timeLeft, setTimeLeft] = useState({});
+  const [ordersInProduction, setOrdersInProduction] = useState([]);
 
   // Função para converter minutos em segundos
   function convertMinutesToSeconds(minutes) {
@@ -41,15 +42,17 @@ const Home = () => {
       const newOrder = {
         numeroPedido: orders.length + 1,
         cliente: order.name,
-        status: "Em produção",
+        status: ordersInProduction.length < 3 ? "Em produção" : "Aguardando",
         totalTimeInSeconds: totalTimeInSeconds,
         totalTimeFormatted: totalTimeFormatted,
       };
 
       setOrders([...orders, newOrder]);
 
-      // Iniciar contagem regressiva para este pedido
-      startTimer(newOrder);
+      // Se tiver menos de 3 pedidos em produção, iniciar o cronômetro
+      if (ordersInProduction.length < 3) {
+        startTimer(newOrder);
+      }
     } else {
       console.error("Erro ao calcular o tempo total de entrega.");
     }
@@ -99,7 +102,7 @@ const Home = () => {
         const elapsedTime =
           totalTimeInSeconds - newTimeLeft[order.numeroPedido];
 
-        if (elapsedTime >= 1800 && order.status === "Em produção") {
+        if (elapsedTime >= 30 && order.status === "Em produção") {
           // Atualizar o status do pedido para "Rota de Entrega" após 30 minutos
           setOrders((prevOrders) =>
             prevOrders.map((o) =>
@@ -108,9 +111,14 @@ const Home = () => {
                 : o
             )
           );
+
+          // Remover da lista de produção e adicionar à lista de entrega
+          setOrdersInProduction((prev) =>
+            prev.filter((o) => o.numeroPedido !== order.numeroPedido)
+          );
         }
 
-        if (newTimeLeft[order.numeroPedido] <= 0) {
+        if (newTimeLeft[order.numeroPedido] <= 1720) {
           // Atualizar o status do pedido para "Entregue" quando o cronômetro chegar a zero
           setOrders((prevOrders) =>
             prevOrders.map((o) =>
@@ -118,6 +126,11 @@ const Home = () => {
                 ? { ...o, status: "Entregue" }
                 : o
             )
+          );
+
+          // Remover da lista de produção
+          setOrdersInProduction((prev) =>
+            prev.filter((o) => o.numeroPedido !== order.numeroPedido)
           );
           clearInterval(interval);
         }
@@ -133,7 +146,54 @@ const Home = () => {
           : o
       )
     );
+
+    // Adicionar à lista de produção se houver menos de 3 pedidos em produção
+    if (ordersInProduction.length < 3) {
+      setOrdersInProduction((prev) => [...prev, order]);
+    }
   };
+
+  useEffect(() => {
+    // Ao iniciar, buscar os primeiros 3 pedidos em produção
+    const initialOrders = orders
+      .filter((order) => order.status === "Em produção")
+      .slice(0, 3);
+    initialOrders.forEach((order) => startTimer(order));
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    // Verificar se há pedidos em "Aguardando" para movê-los para "Em produção"
+    const waitingOrders = orders.filter(
+      (order) => order.status === "Aguardando"
+    );
+    const toMove = Math.min(
+      3 - ordersInProduction.length,
+      waitingOrders.length
+    );
+
+    if (toMove > 0) {
+      const newOrdersInProduction = waitingOrders
+        .slice(0, toMove)
+        .map((order) => ({
+          ...order,
+          status: "Em produção",
+        }));
+
+      setOrders((prevOrders) =>
+        prevOrders.map((o) =>
+          newOrdersInProduction.some(
+            (newOrder) => newOrder.numeroPedido === o.numeroPedido
+          )
+            ? { ...o, status: "Em produção" }
+            : o
+        )
+      );
+
+      newOrdersInProduction.forEach((order) => startTimer(order));
+    }
+  }, [orders, ordersInProduction]);
 
   return (
     <main>
