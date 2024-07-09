@@ -1,19 +1,16 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import logo from '../../assets/images/logo.png'
-import './styles.css'
+import logo from "../../assets/images/logo.png";
+import "./styles.css";
 
 const Header = () => {
   return (
     <header>
-      <img src={logo} alt="logo" />
-      <nav>
-        <ul>
-          <li>
-            <Link to={'/'} className="link">Home</Link>
-          </li>
-        </ul>
-      </nav>
+      <div>
+        <img src={logo} alt="logo" />
+      </div>
+      <div>
+        <h1>Order List</h1>
+      </div>
     </header>
   );
 };
