@@ -12,10 +12,10 @@
   align-items: center;
   display: flex;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 400;
   justify-content: center;
-  text-align: start;
-  width: 115px;
+  text-align: center;
+  width: 118px;
 }
 
 .status_rota_entrega {
@@ -34,7 +34,7 @@
 
   .table_second_row th {
     font-size: 13px;
-    width: 95px;
+    width: 75px;
   }
 
 }
