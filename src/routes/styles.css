@@ -7,7 +7,7 @@ main {
 
 .sub_header {
   align-items: center;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid #ffcb9d;
   display: flex;
   text-align: center;
   padding: 10px;
