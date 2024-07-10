@@ -59,7 +59,7 @@ const OrderItem = ({ numeroPedido, cliente, status, timeLeft }) => {
             </th>
           ) : status === "Rota de Entrega" ? (
             <th className="status_rota_entrega">
-              <FcInTransit style={{ fontSize: "20px" }} />
+              <FcInTransit style={{ fontSize: "23px" }} />
               {status}
             </th>
           ) : (
