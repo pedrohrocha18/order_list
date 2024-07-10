@@ -8,6 +8,15 @@
   width: 100%;
 }
 
+.table_second_row tr {
+  display: flex;
+  height: 45px;
+  justify-content: space-around;
+  margin-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  width: 100%;
+}
+
 .table_second_row th {
   align-items: center;
   display: flex;

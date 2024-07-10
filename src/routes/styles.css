@@ -35,9 +35,20 @@ main {
   width: 100%;
 }
 
+.table_first_row tr {
+  align-items: center;
+  display: flex;
+  padding: 10px;
+  user-select: none;
+  text-align: center;
+  width: 100%;
+}
+
 .table_first_row th {
   width: 25%;
 }
+
+
 
 @media screen and (max-width: 810px) {
   .header {
