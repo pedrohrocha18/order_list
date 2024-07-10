@@ -13,7 +13,7 @@ const Modal = ({ onAddOrder }) => {
       onAddOrder({ name, address });
       setName("");
       setAddress("");
-      toast.success("Pedido adicionado");
+      toast.success("Pedido adicionado!");
     }
   };
 
