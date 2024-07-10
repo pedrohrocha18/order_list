@@ -7,7 +7,7 @@ export default function Footer() {
   return (
     <footer style={{ userSelect: "none" }}>
       <p>
-        Desenvolvido por <span>Pedro H. Rocha -</span>
+        Desenvolvido por <span>Pedro H. Rocha</span>
       </p>
       <div className="div_icons">
         <Link to={"https://www.linkedin.com/in/pedrohrocha16/"}>
