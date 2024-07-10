@@ -20,7 +20,7 @@
 
 #### Os pedidos são gerenciados da seguinte maneira: apenas TRÊS pedidos podem ter o status 'Em Produção' simultaneamente, enquanto os demais permanecem com o status 'Aguardando'. À medida que os pedidos em produção avançam para o status 'Rota de Entrega', os próximos pedidos na fila são atualizados para 'Em Produção'. Esse ciclo continua, respeitando o limite de TRÊS pedidos em produção, até que todos os pedidos pendentes sejam processados.
 
-## **Principais Tecnologias/Bibliotecas utilizadas**:
+## **Tecnologias/Bibliotecas utilizadas**:
 #### React, React Router Dom, React-Toastify, React Icons, Axios, Cors, Express, Tailwind(Flowbite), Moment, react-google-maps/api entre outras. 
 
 ## **Uso**:
