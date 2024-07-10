@@ -6,15 +6,19 @@ import AddOrder from "../buttons/addOrder";
 const Modal = ({ onAddOrder }) => {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (name && address) {
-      onAddOrder({ name, address });
-      setName("");
-      setAddress("");
-      toast.success("Pedido adicionado!");
+  
+    if (!name || !address) {
+      return; // Evita processamento adicional se os campos estiverem vazios
     }
+  
+    onAddOrder({ name, address });
+    setName("");
+    setAddress("");
+  
+    toast.success("Pedido adicionado!");
   };
 
   return (
@@ -29,7 +33,6 @@ const Modal = ({ onAddOrder }) => {
       </div>
       <div
         id="crud-modal"
-        style={{ width: "300px" }}
         tabIndex="-1"
         aria-hidden="true"
         className="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
