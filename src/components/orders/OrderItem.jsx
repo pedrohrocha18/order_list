@@ -33,47 +33,50 @@ const OrderItem = ({ numeroPedido, cliente, status, timeLeft }) => {
     return () => clearInterval(interval);
   }, [timeLeft]);
 
-  // Verificação do comprimento do timer
-  const renderTimer = () => {
-    if (timer.length === 8 || timer.length === 11) {
-      return timer;
-    } else {
-      return <div>Aguardando</div>;
+  const renderStatusIcon = () => {
+    let icon;
+    switch (status) {
+      case "Aguardando":
+        icon = <FcSurvey style={{ fontSize: "20px" }} />;
+        break;
+      case "Em produção":
+        icon = <FcFlashOn style={{ fontSize: "20px" }} />;
+        break;
+      case "Rota de Entrega":
+        icon = <FcInTransit style={{ fontSize: "23px" }} />;
+        break;
+      default:
+        icon = <FcOk style={{ fontSize: "20px" }} />;
+        break;
     }
+    return icon;
+  };
+
+  const renderTimer = () => {
+    return timer.length === 8 || timer.length === 11 ? (
+      timer
+    ) : (
+      <div>Aguardando</div>
+    );
   };
 
   return (
-      <tbody className="table_second_row">
-        <tr>
-          <th>{numeroPedido}</th>
-          <th>{cliente}</th>
-          {status === "Aguardando" ? (
-            <th>
-              <FcSurvey style={{ fontSize: "20px" }} />
-              {status}
-            </th>
-          ) : status === "Em produção" ? (
-            <th>
-              <FcFlashOn style={{ fontSize: "20px" }} />
-              {status}
-            </th>
-          ) : status === "Rota de Entrega" ? (
-            <th className="status_rota_entrega">
-              <FcInTransit style={{ fontSize: "23px" }} />
-              {status}
-            </th>
-          ) : (
-            <th style={{ gap: "5px", width: "95px" }}>
-              <FcOk style={{ fontSize: "20px" }} />
-              {status}
-            </th>
-          )}
-          <th>
-            <FcClock style={{ fontSize: "20px" }} />
-            {renderTimer()}
-          </th>
-        </tr>
-      </tbody>
+    <tbody className="table_second_row">
+      <tr>
+        <th>{numeroPedido}</th>
+        <th>{cliente}</th>
+        <th
+          className={status === "Rota de Entrega" ? "status_rota_entrega" : ""}
+        >
+          {renderStatusIcon()}
+          {status}
+        </th>
+        <th>
+          <FcClock style={{ fontSize: "20px" }} />
+          {renderTimer()}
+        </th>
+      </tr>
+    </tbody>
   );
 };
 

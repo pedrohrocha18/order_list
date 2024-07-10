@@ -9,12 +9,12 @@ const Home = () => {
   const [timeLeft, setTimeLeft] = useState({});
   const [ordersInProduction, setOrdersInProduction] = useState([]);
 
-  // Função para converter minutos em segundos
+  //Função para converter Minutos em Segundos
   function convertMinutesToSeconds(minutes) {
     return minutes * 60;
   }
 
-  // Função para converter segundos em horas, minutos e segundos
+  //Função para converter Segundos em Horas/Minutos/Segundos
   function convertSecondsToHoursMinutesSeconds(seconds) {
     const hours = Math.floor(seconds / 3600);
     const remainingSeconds = seconds % 3600;
@@ -32,9 +32,9 @@ const Home = () => {
   const addOrder = async (order) => {
     const travelTime = await getTravelTime(order.address);
 
-    if (travelTime !== null && travelTime !== undefined) {
-      const preparationTime = convertMinutesToSeconds(30);
-      const totalTimeInSeconds = travelTime + preparationTime;
+    if (travelTime != null) {
+      const preparationTimeSeconds = convertMinutesToSeconds(30);
+      const totalTimeInSeconds = travelTime + preparationTimeSeconds;
 
       const totalTimeFormatted =
         convertSecondsToHoursMinutesSeconds(totalTimeInSeconds);
@@ -43,13 +43,12 @@ const Home = () => {
         numeroPedido: orders.length + 1,
         cliente: order.name,
         status: ordersInProduction.length < 3 ? "Em produção" : "Aguardando",
-        totalTimeInSeconds: totalTimeInSeconds,
-        totalTimeFormatted: totalTimeFormatted,
+        totalTimeInSeconds,
+        totalTimeFormatted,
       };
 
       setOrders([...orders, newOrder]);
 
-      // Se tiver menos de 3 pedidos em produção, iniciar o cronômetro
       if (ordersInProduction.length < 3) {
         startTimer(newOrder);
       }
@@ -60,14 +59,16 @@ const Home = () => {
 
   // Função para obter o tempo de trajeto
   const getTravelTime = async (destination) => {
-    const origin = "Rua Valdemar de Sousa Melo, 325, Patos de Minas"; // Defina o endereço de origem aqui
+    const origin = "Rua Valdemar de Sousa Melo, 325, Patos de Minas"; // Endereço de origem fixo
 
     try {
-      const response = await axios.get(
-        `http://localhost:5000/api/googlemaps/directions?origin=${encodeURIComponent(
-          origin
-        )}&destination=${encodeURIComponent(destination)}`
-      );
+      const url = `http://localhost:5000/api/googlemaps/directions`;
+      const params = {
+        origin: origin,
+        destination: destination,
+      };
+
+      const response = await axios.get(url, { params });
 
       const route = response.data.routes[0];
       if (!route) {
@@ -77,7 +78,7 @@ const Home = () => {
       const durationInSeconds = route.legs[0].duration.value;
       return durationInSeconds;
     } catch (error) {
-      console.error("Erro ao buscar tempo de trajeto:", error);
+      console.error("Erro ao buscar tempo de trajeto:", error.message);
       return null;
     }
   };
@@ -102,7 +103,7 @@ const Home = () => {
         const elapsedTime =
           totalTimeInSeconds - newTimeLeft[order.numeroPedido];
 
-        if (elapsedTime >= 30 && order.status === "Em produção") {
+        if (elapsedTime >= 1800 && order.status === "Em produção") {
           // Atualizar o status do pedido para "Rota de Entrega" após 30 minutos
           setOrders((prevOrders) =>
             prevOrders.map((o) =>
@@ -118,7 +119,7 @@ const Home = () => {
           );
         }
 
-        if (newTimeLeft[order.numeroPedido] <= 1720) {
+        if (newTimeLeft[order.numeroPedido] <= 0) {
           // Atualizar o status do pedido para "Entregue" quando o cronômetro chegar a zero
           setOrders((prevOrders) =>
             prevOrders.map((o) =>
@@ -164,34 +165,32 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    // Verificar se há pedidos em "Aguardando" para movê-los para "Em produção"
+    // Filtrar pedidos em "Aguardando"
     const waitingOrders = orders.filter(
       (order) => order.status === "Aguardando"
     );
-    const toMove = Math.min(
-      3 - ordersInProduction.length,
-      waitingOrders.length
-    );
 
-    if (toMove > 0) {
-      const newOrdersInProduction = waitingOrders
-        .slice(0, toMove)
-        .map((order) => ({
-          ...order,
-          status: "Em produção",
-        }));
+    // Determinar quantos pedidos podem ser movidos para "Em produção"
+    const maxOrdersToMove = 3 - ordersInProduction.length;
+    const ordersToMoveCount = Math.min(maxOrdersToMove, waitingOrders.length);
 
+    if (ordersToMoveCount > 0) {
+      // Selecionar os pedidos que serão movidos
+      const ordersToMove = waitingOrders.slice(0, ordersToMoveCount);
+
+      // Atualizar o estado dos pedidos para "Em produção"
       setOrders((prevOrders) =>
-        prevOrders.map((o) =>
-          newOrdersInProduction.some(
-            (newOrder) => newOrder.numeroPedido === o.numeroPedido
+        prevOrders.map((order) =>
+          ordersToMove.some(
+            (newOrder) => newOrder.numeroPedido === order.numeroPedido
           )
-            ? { ...o, status: "Em produção" }
-            : o
+            ? { ...order, status: "Em produção" }
+            : order
         )
       );
 
-      newOrdersInProduction.forEach((order) => startTimer(order));
+      // Iniciar o timer para cada novo pedido em produção
+      ordersToMove.forEach((order) => startTimer(order));
     }
   }, [orders, ordersInProduction]);
 

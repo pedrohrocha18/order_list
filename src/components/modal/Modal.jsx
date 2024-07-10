@@ -6,23 +6,22 @@ import AddOrder from "../buttons/addOrder";
 const Modal = ({ onAddOrder }) => {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
-  
+
     if (!name || !address) {
       return; // Evita processamento adicional se os campos estiverem vazios
     }
-  
+
     onAddOrder({ name, address });
     setName("");
     setAddress("");
-  
     toast.success("Pedido adicionado!");
   };
 
   return (
-    <div>
+    <div style={{ color: "black", fontWeight: "400" }}>
       <ToastContainer />
       <div
         data-modal-target="crud-modal"
