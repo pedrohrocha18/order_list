@@ -20,13 +20,13 @@ const Modal = ({ onAddOrder }) => {
   return (
     <div>
       <ToastContainer />
-      <button
+      <div
         data-modal-target="crud-modal"
         data-modal-toggle="crud-modal"
         type="button"
       >
         <AddOrder />
-      </button>
+      </div>
       <div
         id="crud-modal"
         tabIndex="-1"

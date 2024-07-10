@@ -206,12 +206,14 @@ const Home = () => {
         </div>
       </div>
       <table className="table">
-        <tr className="table_first_row">
-          <th>Pedido</th>
-          <th>Cliente</th>
-          <th>Status</th>
-          <th>Tempo</th>
-        </tr>
+        <tbody className="table_first_row">
+          <tr>
+            <th>Pedido</th>
+            <th>Cliente</th>
+            <th>Status</th>
+            <th>Tempo</th>
+          </tr>
+        </tbody>
         {orders.map((order) => (
           <OrderItem
             key={order.numeroPedido}

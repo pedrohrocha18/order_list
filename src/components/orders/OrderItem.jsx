@@ -43,35 +43,37 @@ const OrderItem = ({ numeroPedido, cliente, status, timeLeft }) => {
   };
 
   return (
-    <tr className="table_second_row">
-      <th>{numeroPedido}</th>
-      <th>{cliente}</th>
-      {status === "Aguardando" ? (
-        <th>
-          <FcSurvey style={{ fontSize: "20px" }} />
-          {status}
-        </th>
-      ) : status === "Em produção" ? (
-        <th>
-          <FcFlashOn style={{ fontSize: "20px" }} />
-          {status}
-        </th>
-      ) : status === "Rota de Entrega" ? (
-        <th className="status_rota_entrega">
-          <FcInTransit style={{ fontSize: "20px" }} />
-          {status}
-        </th>
-      ) : (
-        <th style={{ gap: "5px", width: "95px" }}>
-          <FcOk style={{ fontSize: "20px" }} />
-          {status}
-        </th>
-      )}
-      <th>
-        <FcClock style={{ fontSize: "20px" }} />
-        {renderTimer()}
-      </th>
-    </tr>
+      <tbody className="table_second_row">
+        <tr>
+          <th>{numeroPedido}</th>
+          <th>{cliente}</th>
+          {status === "Aguardando" ? (
+            <th>
+              <FcSurvey style={{ fontSize: "20px" }} />
+              {status}
+            </th>
+          ) : status === "Em produção" ? (
+            <th>
+              <FcFlashOn style={{ fontSize: "20px" }} />
+              {status}
+            </th>
+          ) : status === "Rota de Entrega" ? (
+            <th className="status_rota_entrega">
+              <FcInTransit style={{ fontSize: "20px" }} />
+              {status}
+            </th>
+          ) : (
+            <th style={{ gap: "5px", width: "95px" }}>
+              <FcOk style={{ fontSize: "20px" }} />
+              {status}
+            </th>
+          )}
+          <th>
+            <FcClock style={{ fontSize: "20px" }} />
+            {renderTimer()}
+          </th>
+        </tr>
+      </tbody>
   );
 };
 
