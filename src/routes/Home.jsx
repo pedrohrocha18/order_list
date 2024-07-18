@@ -9,12 +9,12 @@ const Home = () => {
   const [timeLeft, setTimeLeft] = useState({});
   const [ordersInProduction, setOrdersInProduction] = useState([]);
 
-  //Função para converter Minutos em Segundos
+  // Função para converter Minutos em Segundos
   function convertMinutesToSeconds(minutes) {
     return minutes * 60;
   }
 
-  //Função para converter Segundos em Horas/Minutos/Segundos
+  // Função para converter Segundos em Horas/Minutos/Segundos
   function convertSecondsToHoursMinutesSeconds(seconds) {
     const hours = Math.floor(seconds / 3600);
     const remainingSeconds = seconds % 3600;
@@ -42,15 +42,17 @@ const Home = () => {
       const newOrder = {
         numeroPedido: orders.length + 1,
         cliente: order.name,
-        status: ordersInProduction.length < 3 ? "Em produção" : "Aguardando",
+        status: ordersInProduction.length < 5 ? "Em produção" : "Aguardando",
         totalTimeInSeconds,
         totalTimeFormatted,
       };
 
       setOrders([...orders, newOrder]);
 
-      if (ordersInProduction.length < 3) {
+      if (ordersInProduction.length < 5) {
         startTimer(newOrder);
+      } else {
+        startWaitingTimer(newOrder);
       }
     } else {
       console.error("Erro ao calcular o tempo total de entrega.");
@@ -148,10 +150,32 @@ const Home = () => {
       )
     );
 
-    // Adicionar à lista de produção se houver menos de 3 pedidos em produção
-    if (ordersInProduction.length < 3) {
+    // Adicionar à lista de produção se houver menos de 5 pedidos em produção
+    if (ordersInProduction.length < 5) {
       setOrdersInProduction((prev) => [...prev, order]);
     }
+  };
+
+  // Função para iniciar o cronômetro de espera para um pedido específico
+  const startWaitingTimer = (order) => {
+    const waitingInterval = setTimeout(() => {
+      setOrders((prevOrders) =>
+        prevOrders.map((o) =>
+          o.numeroPedido === order.numeroPedido
+            ? { ...o, status: "Em produção" }
+            : o
+        )
+      );
+      startTimer(order); // Inicia o cronômetro de produção após mover para "Em produção"
+    }, convertMinutesToSeconds(10) * 1000);
+
+    setOrders((prevOrders) =>
+      prevOrders.map((o) =>
+        o.numeroPedido === order.numeroPedido
+          ? { ...o, waitingIntervalId: waitingInterval }
+          : o
+      )
+    );
   };
 
   useEffect(() => {
@@ -171,7 +195,7 @@ const Home = () => {
     );
 
     // Determinar quantos pedidos podem ser movidos para "Em produção"
-    const maxOrdersToMove = 3 - ordersInProduction.length;
+    const maxOrdersToMove = 5 - ordersInProduction.length;
     const ordersToMoveCount = Math.min(maxOrdersToMove, waitingOrders.length);
 
     if (ordersToMoveCount > 0) {

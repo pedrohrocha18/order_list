@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import AddOrder from "../buttons/addOrder";
+import AddOrder from "../../../../paralelo/src/components/buttons/addOrder";
 
 const Modal = ({ onAddOrder }) => {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [isFieldsDisabled, setIsFieldsDisabled] = useState(false); // Novo estado para desabilitar os campos
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -17,7 +19,15 @@ const Modal = ({ onAddOrder }) => {
     onAddOrder({ name, address });
     setName("");
     setAddress("");
-    toast.success("Pedido adicionado!");
+    toast.success("Pedido adicionado!", { autoClose: 2500 });
+
+    // Desativa os campos e o botão por 2 segundos
+    setIsButtonDisabled(true);
+    setIsFieldsDisabled(true);
+    setTimeout(() => {
+      setIsButtonDisabled(false);
+      setIsFieldsDisabled(false);
+    }, 2000);
   };
 
   return (
@@ -89,6 +99,7 @@ const Modal = ({ onAddOrder }) => {
                     maxLength={12}
                     value={name}
                     onChange={(e) => setName(e.target.value)}
+                    disabled={isFieldsDisabled} // Desativa o campo se isFieldsDisabled for true
                   />
                 </div>
                 <div className="col-span-2">
@@ -108,13 +119,21 @@ const Modal = ({ onAddOrder }) => {
                     required
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
+                    disabled={isFieldsDisabled} // Desativa o campo se isFieldsDisabled for true
                   />
                 </div>
               </div>
               <button
                 type="submit"
-                style={{ transition: "0.3s", width: "170px" }}
-                className="text-white inline-flex items-center bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                style={{
+                  transition: "0.3s",
+                  width: "170px",
+                  opacity: isButtonDisabled ? 0.3 : 1,
+                }}
+                className={`text-white inline-flex items-center bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ${
+                  isButtonDisabled ? "cursor-not-allowed" : ""
+                }`}
+                disabled={isButtonDisabled} // Desativa o botão se isButtonDisabled for true
               >
                 <svg
                   className="me-1 -ms-1 w-5 h-5"
