@@ -103,7 +103,7 @@ const Home = () => {
         const elapsedTime =
           totalTimeInSeconds - newTimeLeft[order.numeroPedido];
 
-        if (elapsedTime >= 35 && order.status === "Em produção") {
+        if (elapsedTime >= 1800 && order.status === "Em produção") {
           // Atualizar o status do pedido para "Rota de Entrega" após 30 minutos
           setOrders((prevOrders) =>
             prevOrders.map((o) =>
@@ -114,7 +114,7 @@ const Home = () => {
           );
         }
 
-        if (newTimeLeft[order.numeroPedido] <= 1700) {
+        if (newTimeLeft[order.numeroPedido] <= 0) {
           // Atualizar o status do pedido para "Entregue" quando o cronômetro chegar a zero
           setOrders((prevOrders) =>
             prevOrders.map((o) =>
@@ -165,7 +165,7 @@ const Home = () => {
       // Iniciar o cronômetro de produção após mover para "Em produção"
       const updatedOrder = { ...order, status: "Em produção" };
       startTimer(updatedOrder);
-    }, convertMinutesToSeconds(1) * 1000);
+    }, convertMinutesToSeconds(10) * 1000);
 
     // Adicionar o ID do intervalo de espera ao estado do pedido
     setOrders((prevOrders) =>
