@@ -33,7 +33,7 @@ const OrderItem = ({ numeroPedido, cliente, status, timeLeft }) => {
 
   // Função para renderizar o timer ou a mensagem "Aguardando"
   const renderTimer = () => {
-    return timer === "00:00:00" ? "Aguardando" : timer;
+    return timer === "00:00:00" ? "00:00:00" : timer;
   };
 
   // Função para renderizar o ícone e o status de acordo com o status do pedido
