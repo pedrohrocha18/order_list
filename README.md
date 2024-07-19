@@ -1,6 +1,6 @@
 # **Order List**
 
-#### Este projeto consiste no desenvolvimento de uma aplicação frontend em React para gerenciamento de pedidos de entrega.
+#### Este projeto consiste em uma aplicação frontend em React para gerenciamento de pedidos de entrega.
 
 #### A aplicação permite aos usuários cadastrar novos pedidos, visualizar o tempo estimado de entrega para cada pedido e acompanhar a atualização dinâmica desse tempo.
 
@@ -18,12 +18,14 @@
 
 #### Exibição dinâmica do status da entrega, sendo: Aguardando, Em Produção, Rota de Entrega e Entregue.
 
-#### Os pedidos são gerenciados da seguinte maneira: os primeiros CINCO pedidos iniciam com o status 'Em Produção', enquanto os demais são adicionados com o status 'Aguardando', após 10 minutos adicionados, esses pedidos vão para 'Em Produção', assim seguindo todo o fluxo (Em Produção, Rota de Entrega e Entregue).
+#### Os pedidos são gerenciados da seguinte forma: os primeiros 5 pedidos começam com o status 'Em Produção', enquanto os demais são adicionados com o status 'Aguardando'. Após 10 minutos, cada pedido com o status 'Aguardando' é atualizado para 'Em Produção', seguindo assim todo o fluxo: 'Em Produção', 'Rota de Entrega' e 'Entregue'.
 
 ## **Tecnologias/Bibliotecas utilizadas**:
-#### React, React Router Dom, React-Toastify, React Icons, Axios, Express, Cors, Tailwind(Flowbite), react-google-maps/api. 
+
+#### React, React Router Dom, React-Toastify, React Icons, Axios, Express, Cors, Tailwind(Flowbite), react-google-maps/api.
 
 ## **Uso**:
+
 #### Certifique-se de ter o Node v22.4.0 instalado em sua máquina.
 
 ```bash
@@ -33,6 +35,7 @@ cd order_list
 
 npm install
 ```
+
 #### Crie e exporte um arquivo key.js na pasta raiz do projeto:
 
 ```bash
