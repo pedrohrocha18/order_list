@@ -87,14 +87,12 @@ const Home = () => {
 
   // Função para iniciar o cronômetro para um pedido específico
   const startTimer = (order) => {
-    // Definir o tempo restante inicialmente
     const { totalTimeInSeconds } = order;
     setTimeLeft((prevTimeLeft) => ({
       ...prevTimeLeft,
       [order.numeroPedido]: totalTimeInSeconds,
     }));
 
-    // Iniciar o intervalo para decrementar o tempo restante
     const interval = setInterval(() => {
       setTimeLeft((prevTimeLeft) => {
         const newTimeLeft = {
@@ -105,7 +103,7 @@ const Home = () => {
         const elapsedTime =
           totalTimeInSeconds - newTimeLeft[order.numeroPedido];
 
-        if (elapsedTime >= 1800 && order.status === "Em produção") {
+        if (elapsedTime >= 35 && order.status === "Em produção") {
           // Atualizar o status do pedido para "Rota de Entrega" após 30 minutos
           setOrders((prevOrders) =>
             prevOrders.map((o) =>
@@ -114,14 +112,9 @@ const Home = () => {
                 : o
             )
           );
-
-          // Remover da lista de produção e adicionar à lista de entrega
-          setOrdersInProduction((prev) =>
-            prev.filter((o) => o.numeroPedido !== order.numeroPedido)
-          );
         }
 
-        if (newTimeLeft[order.numeroPedido] <= 0) {
+        if (newTimeLeft[order.numeroPedido] <= 1700) {
           // Atualizar o status do pedido para "Entregue" quando o cronômetro chegar a zero
           setOrders((prevOrders) =>
             prevOrders.map((o) =>
@@ -131,7 +124,7 @@ const Home = () => {
             )
           );
 
-          // Remover da lista de produção
+          // Remover da lista de produção e da lista de entrega
           setOrdersInProduction((prev) =>
             prev.filter((o) => o.numeroPedido !== order.numeroPedido)
           );
@@ -141,7 +134,6 @@ const Home = () => {
       });
     }, 1000);
 
-    // Adicionar o ID do intervalo ao estado do pedido
     setOrders((prevOrders) =>
       prevOrders.map((o) =>
         o.numeroPedido === order.numeroPedido
@@ -150,7 +142,6 @@ const Home = () => {
       )
     );
 
-    // Adicionar à lista de produção se houver menos de 5 pedidos em produção
     if (ordersInProduction.length < 5) {
       setOrdersInProduction((prev) => [...prev, order]);
     }
@@ -159,6 +150,7 @@ const Home = () => {
   // Função para iniciar o cronômetro de espera para um pedido específico
   const startWaitingTimer = (order) => {
     const waitingInterval = setTimeout(() => {
+      // Atualizar o estado do pedido para "Em produção"
       setOrders((prevOrders) =>
         prevOrders.map((o) =>
           o.numeroPedido === order.numeroPedido
@@ -166,9 +158,16 @@ const Home = () => {
             : o
         )
       );
-      startTimer(order); // Inicia o cronômetro de produção após mover para "Em produção"
-    }, convertMinutesToSeconds(10) * 1000);
 
+      // Limpar o intervalo de espera
+      clearTimeout(waitingInterval);
+
+      // Iniciar o cronômetro de produção após mover para "Em produção"
+      const updatedOrder = { ...order, status: "Em produção" };
+      startTimer(updatedOrder);
+    }, convertMinutesToSeconds(1) * 1000);
+
+    // Adicionar o ID do intervalo de espera ao estado do pedido
     setOrders((prevOrders) =>
       prevOrders.map((o) =>
         o.numeroPedido === order.numeroPedido
