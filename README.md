@@ -18,10 +18,10 @@
 
 #### Exibição dinâmica do status da entrega, sendo: Aguardando, Em Produção, Rota de Entrega e Entregue.
 
-#### Os pedidos são gerenciados da seguinte maneira: apenas TRÊS pedidos podem ter o status 'Em Produção' simultaneamente, enquanto os demais permanecem com o status 'Aguardando'. À medida que os pedidos em produção avançam para o status 'Rota de Entrega', os próximos pedidos na fila são atualizados para 'Em Produção'. Esse ciclo continua, respeitando o limite de TRÊS pedidos em produção, até que todos os pedidos pendentes sejam processados.
+#### Os pedidos são gerenciados da seguinte maneira: os primeiros CINCO pedidos iniciam com o status 'Em Produção', enquanto os demais são adicionados com o status 'Aguardando', após 10 minutos adicionados, esses pedidos vão para 'Em Produção', assim seguindo todo o fluxo (Em Produção, Rota de Entrega e Entregue).
 
 ## **Tecnologias/Bibliotecas utilizadas**:
-#### React, React Router Dom, React-Toastify, React Icons, Axios, Cors, Express, Tailwind(Flowbite), Moment, react-google-maps/api entre outras. 
+#### React, React Router Dom, React-Toastify, React Icons, Axios, Express, Cors, Tailwind(Flowbite), react-google-maps/api. 
 
 ## **Uso**:
 #### Certifique-se de ter o Node v22.4.0 instalado em sua máquina.
