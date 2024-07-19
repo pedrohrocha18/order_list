@@ -128,12 +128,17 @@ const Home = () => {
           setOrdersInProduction((prev) =>
             prev.filter((o) => o.numeroPedido !== order.numeroPedido)
           );
+
+          // Limpar o intervalo
           clearInterval(interval);
+          return newTimeLeft;
         }
+
         return newTimeLeft;
       });
     }, 1000);
 
+    // Adicionar o ID do intervalo ao estado do pedido
     setOrders((prevOrders) =>
       prevOrders.map((o) =>
         o.numeroPedido === order.numeroPedido
@@ -142,6 +147,7 @@ const Home = () => {
       )
     );
 
+    // Adicionar à lista de produção se houver menos de 5 pedidos em produção
     if (ordersInProduction.length < 5) {
       setOrdersInProduction((prev) => [...prev, order]);
     }
@@ -178,13 +184,11 @@ const Home = () => {
   };
 
   useEffect(() => {
-    // Ao iniciar, buscar os primeiros 3 pedidos em produção
+    // Ao iniciar, buscar os primeiros 5 pedidos em produção
     const initialOrders = orders
       .filter((order) => order.status === "Em produção")
-      .slice(0, 3);
+      .slice(0, 5);
     initialOrders.forEach((order) => startTimer(order));
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
