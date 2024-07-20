@@ -14,7 +14,7 @@
 
 #### Tela dedicada a exibir todos os pedidos cadastrados, com um layout responsivo, permitindo que o usuário utilize a aplicação em qualquer dispositivo.
 
-#### Exibição do tempo estimado de entrega, que é a soma do tempo de preparo (30 minutos) e do tempo de viagem calculado pelo Google Maps Directions API.
+#### Exibição do tempo estimado de entrega, que é a soma do tempo de preparo (30 minutos) e do tempo de viagem calculado pelo Google Maps Directions API (endereço do restaurante -> endereço do cliente).
 
 #### Exibição dinâmica do status da entrega, sendo: Aguardando, Em Produção, Rota de Entrega e Entregue.
 
